@@ -1,21 +1,19 @@
 @echo off
 chcp 65001 >nul
-title LLM Interview Agent - Setup
+title LLM Interview Agent - Backend Setup
 
 echo ============================================
 echo   LLM Interview Agent - Backend Setup
 echo ============================================
 echo.
 
-REM === Check Python ===
 python --version >nul 2>&1
 if %errorlevel% neq 0 (
     echo [ERROR] Python not found. Please install Python 3.10+
     pause
     exit /b 1
 )
-echo [OK] Python found
-for /f "tokens=*" %%i in ('python --version') do echo     %%i
+for /f "tokens=*" %%i in ('python --version') do echo [OK] Python: %%i
 
 echo.
 echo ============================================
@@ -42,7 +40,21 @@ if not exist .env (
         echo [OK] Created .env. Please edit backend\.env with your API Key
     ) else (
         echo [INFO] Creating default .env...
-        python -c "open('.env','w',encoding='utf-8').write('# LLM Provider Configuration\nLLM_PROVIDER=deepseek\n\n# DeepSeek\nDEEPSEEK_API_KEY=your-deepseek-api-key-here\nDEEPSEEK_BASE_URL=https://api.deepseek.com\nDEEPSEEK_MODEL=deepseek-chat\n\n# OpenAI (Optional)\nOPENAI_API_KEY=your-openai-api-key-here\nOPENAI_BASE_URL=https://api.openai.com/v1\nOPENAI_MODEL=gpt-4o\n\n# Claude (Optional)\nCLAUDE_API_KEY=your-claude-api-key-here\nCLAUDE_BASE_URL=https://api.anthropic.com\nCLAUDE_MODEL=claude-sonnet-4-20250514\n\n# Ollama (Optional, local)\nOLLAMA_BASE_URL=http://localhost:11434\nOLLAMA_MODEL=qwen2.5:7b\n\n# Server\nBACKEND_HOST=0.0.0.0\nBACKEND_PORT=8000\n')"
+        python -c "open('.env','w',encoding='utf-8').write('LLM_PROVIDER=deepseek
+DEEPSEEK_API_KEY=your-key-here
+DEEPSEEK_BASE_URL=https://api.deepseek.com
+DEEPSEEK_MODEL=deepseek-chat
+OPENAI_API_KEY=your-key-here
+OPENAI_BASE_URL=https://api.openai.com/v1
+OPENAI_MODEL=gpt-4o
+CLAUDE_API_KEY=your-key-here
+CLAUDE_BASE_URL=https://api.anthropic.com
+CLAUDE_MODEL=claude-sonnet-4-20250514
+OLLAMA_BASE_URL=http://localhost:11434
+OLLAMA_MODEL=qwen2.5:7b
+BACKEND_HOST=0.0.0.0
+BACKEND_PORT=8000
+')"
         echo [OK] Created .env. Please edit backend\.env with your API Key
     )
 ) else (

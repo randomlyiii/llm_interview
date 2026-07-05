@@ -4,7 +4,6 @@ title LLM Interview Agent - Frontend
 
 cd /d "%~dp0"
 
-REM === Check Node.js ===
 node --version >nul 2>&1
 if %errorlevel% neq 0 (
     echo [ERROR] Node.js not found. Please install Node.js 18+
@@ -12,7 +11,6 @@ if %errorlevel% neq 0 (
     exit /b 1
 )
 
-REM === Check node_modules ===
 if not exist "node_modules" (
     echo [INFO] Installing frontend dependencies...
     call npm install
@@ -23,7 +21,6 @@ if not exist "node_modules" (
     )
 )
 
-REM === Launch ===
 echo.
 echo ============================================
 echo   LLM Interview Agent - Frontend
