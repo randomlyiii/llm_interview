@@ -3,10 +3,9 @@ LLM 调用服务 —— 统一接口，支持 DeepSeek / OpenAI / Claude / Ollam
 """
 import json
 import logging
-from typing import Optional, AsyncGenerator
+from typing import Optional
 
 from openai import AsyncOpenAI
-import anthropic
 
 from config import settings
 
@@ -19,7 +18,7 @@ class LLMService:
     def __init__(self):
         self.provider = settings.llm_provider
         self._openai_client: Optional[AsyncOpenAI] = None
-        self._claude_client: Optional[anthropic.AsyncAnthropic] = None
+        self._claude_client = None  # Lazy import
         logger.info(f"LLM Service initialized with provider: {self.provider}")
 
     # ────────────────── 客户端懒加载 ──────────────────
@@ -42,12 +41,14 @@ class LLMService:
                     base_url=f"{settings.ollama_base_url}/v1",
                 )
             else:
-                raise ValueError(f"不支持的 provider: {self.provider}")
+                raise ValueError(f"Unsupported provider: {self.provider}")
         return self._openai_client
 
     @property
-    def claude_client(self) -> anthropic.AsyncAnthropic:
+    def claude_client(self):
+        """Lazy-import anthropic only when Claude provider is used"""
         if self._claude_client is None:
+            import anthropic
             self._claude_client = anthropic.AsyncAnthropic(
                 api_key=settings.claude_api_key,
                 base_url=settings.claude_base_url,
