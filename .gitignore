@@ -24,6 +24,17 @@ dist/
 .DS_Store
 Thumbs.db
 
-# Exam data (user-generated)
+# Project data
 backend/exam_outputs/
 *.log
+
+# Exclude all .env files except the example
+*.env
+!.env.example
+
+# Error screenshots and temp files
+error/
+decision/
+baseprompt*
+BasePrompt*
+prompt*
