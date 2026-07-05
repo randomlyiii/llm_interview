@@ -1,7 +1,6 @@
-"""
-LLM Interview Agent — FastAPI 后端入口
-"""
+"""LLM Interview Agent - FastAPI backend entry point"""
 import logging
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -9,21 +8,28 @@ from fastapi.middleware.cors import CORSMiddleware
 from api.routes import router
 from config import settings
 
-# 日志
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
 )
 logger = logging.getLogger(__name__)
 
-# FastAPI 应用
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    logger.info(f"Starting on {settings.backend_host}:{settings.backend_port}")
+    logger.info(f"Provider: {settings.llm_provider}")
+    yield
+    logger.info("Shutting down")
+
+
 app = FastAPI(
     title="LLM Interview Agent",
-    description="基于 LLM 的智能面试备考系统 API",
+    description="LLM-based interview preparation system API",
     version="1.0.0",
+    lifespan=lifespan,
 )
 
-# CORS —— 允许前端跨域访问
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -32,16 +38,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 注册路由
 app.include_router(router)
-
-
-@app.on_event("startup")
-async def startup():
-    logger.info(f"LLM Interview Agent starting on {settings.backend_host}:{settings.backend_port}")
-    logger.info(f"LLM Provider: {settings.llm_provider}")
-    logger.info(f"API Docs: http://{settings.backend_host}:{settings.backend_port}/docs")
-
 
 if __name__ == "__main__":
     import uvicorn
