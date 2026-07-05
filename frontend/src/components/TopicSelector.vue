@@ -29,7 +29,7 @@ function enableCustom() {
 function handleGenerate() {
   const topic = useCustom.value ? customTopic.value.trim() : selectedTopic.value
   if (!topic) {
-    alert('请输入或选择考察范围')
+    alert('Please select or enter a topic')
     return
   }
   emit('generate', topic)
@@ -39,11 +39,10 @@ function handleGenerate() {
 <template>
   <div class="card">
     <div class="card-header">
-      📋 选择考察范围
+      Select Topic
     </div>
     <div class="card-body">
-      <!-- Preset Topics -->
-      <div class="form-label">预设考察领域</div>
+      <div class="form-label">Preset Topics</div>
       <div class="tag-grid mb-3">
         <button
           v-for="t in presetTopics"
@@ -58,31 +57,28 @@ function handleGenerate() {
         </button>
       </div>
 
-      <!-- Custom Topic -->
       <div class="form-group mt-3">
         <div class="form-label">
-          或输入自定义考察范围
-          <small class="text-secondary">（如 "Redis：数据结构与集群"）</small>
+          Or enter a custom topic
+          <small class="text-secondary">(e.g. "Redis: data structures and clustering")</small>
         </div>
         <input
           class="form-input"
           type="text"
           v-model="customTopic"
-          placeholder="例如：Go语言：goroutine与channel"
+          placeholder="e.g. Go: goroutines and channels"
           @focus="enableCustom"
           @input="enableCustom"
-          :class="{ active: useCustom }"
-          style="border-color: v-bind('useCustom ? \"var(--primary)\" : \"var(--border)\"')"
+          :style="{ borderColor: useCustom ? 'var(--primary)' : 'var(--border)' }"
         />
       </div>
 
-      <!-- Generate Button -->
       <div class="text-center mt-4">
         <button class="btn btn-primary btn-lg" @click="handleGenerate">
-          生成试卷
+          Generate Exam
         </button>
         <p class="text-secondary" style="margin-top:8px;font-size:13px">
-          将生成 20 题全题型试卷（单选≥10题 + 多选 + 判断 + 简答 + 论述）
+          20 questions: 10+ single choice, multi choice, T/F, short answer, essay
         </p>
       </div>
     </div>
