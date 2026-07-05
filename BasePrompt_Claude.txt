@@ -1,0 +1,1 @@
+我现在想搭建一个llm的智能agent用于面试准备，它有一个setup.bat一键管理安装相关依赖，它前后端分离，前端有一个launch.bat来管理启动前端页面、后端使用launch.py管理和启动，后端接上了相应的规范化.skill进行题目的创作、批改和生成答案，题目的主要范围参考“Java：jvm;C++:多线程与多进程;Python;Mysql;Linux：CPU、内核、docker及其指令;LLM：MCP、RAG;”(在前端页面可以自主选择填写其他内容)，卷面生成后可以在web上进行作答、批改、对答案，使用git进行版本控制，语言全程使用python
